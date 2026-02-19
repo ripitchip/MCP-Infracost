@@ -234,6 +234,31 @@ def write_text(path: Path, content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
+def load_env_file(env_path: Path) -> None:
+    if not env_path.is_file():
+        return
+
+    for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export ") :].strip()
+        if "=" not in line:
+            continue
+
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+
+        if not key:
+            continue
+        if value.startswith(('"', "'")) and value.endswith(('"', "'")):
+            value = value[1:-1]
+
+        os.environ.setdefault(key, value)
+
+
 def run(org: str, root: Path, include_archived: bool, token: Optional[str]) -> Path:
     downloads_dir = root / "downloads"
     output_root = next_extract_directory(downloads_dir)
@@ -333,6 +358,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     root = Path(args.root).resolve()
+    load_env_file(root / ".env")
     token = os.getenv("GITHUB_TOKEN")
     if token:
         print("Using GITHUB_TOKEN for authenticated API requests.")
