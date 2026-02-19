@@ -14,13 +14,21 @@ This project uses environment variables for configuration.
    ```
 
 To launch the fastapi/mcp:
+
 ```
 uv run main.py
 ```
 
 To launch the mcp inspector:
+
 ```bash
 npx @modelcontextprotocol/inspector http://localhost:8000/mcp
 ```
 
 ![Inspector page](image.png)
+
+To launch the terraform readme fetcher:
+
+```bash
+uv run scripts/fetch_terraform_readmes.py
+```
