@@ -34,7 +34,7 @@ PROVIDER_CONFIG = {
 }
 
 
-@router.get("/infracost/prices")
+@router.api_route("/infracost/prices", methods=["GET", "POST"])
 async def get_infrastructure_prices(
     provider: str = Query("aws"),
     location: str = Query("france"),

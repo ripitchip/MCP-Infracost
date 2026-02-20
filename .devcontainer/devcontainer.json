@@ -1,17 +1,19 @@
 {
-    "name": "Python (uv + MCP)",
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
+    "name": "Python (uv + MCP) + Open WebUI",
+    "dockerComposeFile": "compose.yml",
+    "service": "app",
+    "workspaceFolder": "/workspaces",
     "customizations": {
         "vscode": {
             "extensions": [
                 "charliermarsh.ruff",
                 "ms-python.python",
-                "ms-python.vscode-pylance"
+                "ms-python.vscode-pylance",
+                "hashicorp.terraform"
             ],
             "settings": {
-                "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+                // Ajustement du chemin pour pointer vers le venv créé par uv
+                "python.defaultInterpreterPath": "/workspaces/.venv/bin/python",
                 "python.terminal.activateEnvInSelectedTerminal": true
             }
         }

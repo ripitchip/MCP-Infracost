@@ -137,6 +137,9 @@ The server listens on `0.0.0.0:8000` by default. The following endpoints are imm
 | ----------------------- | ------------------------------------- |
 | `GET /hello`            | Greeting / smoke-test route           |
 | `GET /infracost/prices` | Cloud pricing query                   |
+| `POST /tflint/validate` | Terraform linting and validation      |
+| `POST /tflint/check-syntax` | Terraform formatting check          |
+| `GET /tflint/status`    | Tool availability status              |
 | `GET /mcp`              | MCP endpoint (SSE or Streamable HTTP) |
 | `GET /docs`             | Auto-generated Swagger UI             |
 | `GET /redoc`            | Auto-generated ReDoc UI               |
@@ -248,6 +251,30 @@ GET /infracost/prices?provider=azure&location=europe&cores=4&os=Windows
 # GCP n2-standard-4 in the US
 GET /infracost/prices?provider=gcp&location=us&instance_type=n2-standard-4
 ```
+
+---
+
+### Terraform Linting (`/tflint`)
+
+#### `POST /tflint/validate`
+
+Validates and lints a Terraform file using `tflint` or `terraform validate`.
+
+**Request:** `{ "content": "<terraform code>", "filename": "main.tf" }`  
+**Response:** `{ "valid": bool, "message": string, "errors": [], "warnings": [] }`
+
+#### `POST /tflint/check-syntax`
+
+Checks code formatting using `terraform fmt`.
+
+**Request:** `{ "content": "<terraform code>", "filename": "main.tf" }`  
+**Response:** `{ "formatted": bool, "message": string, "output": string }`
+
+#### `GET /tflint/status`
+
+Checks which linting tools are available on the system.
+
+**Response:** `{ "available_tools": { "terraform": bool, "tflint": bool }, "primary_tool": string }`
 
 ---
 

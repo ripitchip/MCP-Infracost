@@ -2,12 +2,13 @@ from fastapi import FastAPI
 from fastapi_mcp import FastApiMCP
 import uvicorn
 from dotenv import load_dotenv
-from routers import infracost
+from routers import infracost, tflint
 
 load_dotenv()
 
 app = FastAPI(title="Infracost MCP Server")
 app.include_router(infracost.router)
+app.include_router(tflint.router)
 
 
 @app.get("/hello")
